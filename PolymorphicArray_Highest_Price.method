@@ -1,0 +1,30 @@
+ public static EnergyDrink findHighestPricedEnergyDrink(CaffinatedBeverage[] inventory)
+        {
+            double highestPrice = 0.0;
+            EnergyDrink highestPricedDrink = null;
+
+        //traditional for loop
+//                for(int i = 0; i < inventory.length; i++)
+//                {
+//                }
+        //for each loop - Loop garenteed to go through(iterate) the whole array.
+        // System.out.println(Arrays.toString(inventory));
+        for (CaffinatedBeverage bev : inventory)
+        {
+            //check to see if bev is an energy drink
+            //instanceof is an operator ; returns T/F
+            //to check the data type of an object
+            if (bev != null && bev instanceof EnergyDrink)
+            {
+                //"downcast" bev from Caffinated Beverage too EnergyDrink
+                //"Downcast" means it's going from parent to child.
+                EnergyDrink eDrink = (EnergyDrink) bev; //caffinated bev to energy drink
+                //compare the prices
+                if (eDrink.getPrice() > highestPrice) {
+                    highestPrice = eDrink.getPrice();
+                    highestPricedDrink = eDrink;
+                }
+            }
+
+        }
+        return highestPricedDrink; }/
