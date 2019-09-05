@@ -1,0 +1,19 @@
+
+    public static double findAveragePrice(TradingCard[] cards){
+        double totalPrice = 0.0;
+        int amount = 0;
+        double averagePrice = 0;
+        for(TradingCard card : cards){
+            if(card != null){
+                totalPrice += card.getPrice();
+                amount++;// this is working
+                System.out.println(totalPrice);
+                System.out.println(amount);
+                System.out.println("");
+
+            }
+            averagePrice = totalPrice / amount;
+        }
+        return averagePrice;
+                //I FIGURED IT OUT ALONE!!! YAYAYAYAYYAYAYAYA!!!! YES! so happy!
+    }
