@@ -1,0 +1,116 @@
+package edu.miracosta.cs112.DKawalec;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.Scanner;
+
+//import java.util.*;
+/**
+ * Main class is the driver for our application.
+ * Reads InputFile csv file and prints to text file,
+ * Table set of canidates and their contributions, loop * 26
+ * Hacker Ch+
+ *
+ */
+ 
+public class IC07_PresidentialDonations {
+
+    public static void main(String[] args) {
+        String line, name;
+        String [] parts;
+        double contribution;
+        double mMinimum = Double.MAX_VALUE;
+        double mMaximum = 0;
+        int mCount = 0;
+        double mAverage;
+        double mTotal = 0;
+        //only 21 of them
+        
+        String [] presidents = new String []{"Trump Donald J.","Delaney John K.", 
+        "Yang Andrew","Ojeda Richard Neece II", "Castro Julián", "Warren Elizabeth ",
+        "Gabbard Tulsi", "Gillibrand Kirsten", "Harris Kamala D.", "Booker Cory A.",
+        "Williamson Marianne", "Klobuchar Amy J.", "Sanders Bernard", "Buttigieg Pete", 
+        "Inslee Jay R", "Hickenlooper John W.", "O’Rourke Robert Beto","Gravel Maurice Robert",
+        "Weld William Floyd (Bill)", "Swalwell Eric Michael", "Ryan Timothy J.", "Biden Joseph R Jr",
+        "Moulton Seth", "Bennet Michael F.", "Bullock Steve", "de Blasio Bill"};
+        
+        double [] min = new double [26];
+        Arrays.fill(min, Integer.MAX_VALUE);
+        double [] max = new double [26];
+        Arrays.fill(max, 0);
+        double [] average = new double [26];
+        Arrays.fill(average, 0);
+        double [] total = new double [26];
+        Arrays.fill(total, 0);
+        int [] count = new int [26];
+        Arrays.fill(count, 0);
+        //to find the string name of a parsed category
+        //ArrayList<String> names = new ArrayList<String>();
+
+        try{
+            Scanner inFile = new Scanner(new File("PresidentialDonations2020.csv")); //this will grab info from input
+            PrintWriter outFile = new PrintWriter("Summary.txt"); //print to output file
+
+            //throwout the first line
+            inFile.nextLine();
+
+            while(inFile.hasNextLine())
+            {
+                line = inFile.nextLine(); //grabs the whole line
+                parts = line.split(",");
+                name = parts[1]; //Delaney >> delaney
+                contribution = Double.parseDouble(parts[8]); //convert string into a double
+
+
+                for(int i = 0; i < presidents.length ; i++){
+                   if(name.startsWith(presidents[i])){
+                       if(contribution < min[i]) //finds my smallest contribution value
+                           min[i] = contribution;
+
+                        if(min[i] < 0)
+                            inFile.nextLine(); //to set negatives to 0
+
+                       if(contribution > max[i]) //finds my greatest contribution value
+                           max[i] = contribution;
+
+                       count[i]++;
+
+                       total[i] += contribution; //Right ?
+                   }
+                }
+            }
+
+            //names.forEach(System.out::println);
+
+            for(int i = 0; i < presidents.length; i++)
+                average[i] = total[i] / count[i];
+
+            NumberFormat currency = NumberFormat.getCurrencyInstance();
+            for(int i = 0; i<presidents.length; i++) {
+                outFile.println(" ");
+                outFile.println("******************************************************");
+                outFile.println("*     2020 Presidential Campaign Donations     *");
+                outFile.println("*              For Canidate:                   *");
+                outFile.println("*              " + presidents[i] + "              *");
+                outFile.println("*******************************************************");
+                outFile.println("The Minimum Contribution was:  " + currency.format(min[i]) + " ");
+                outFile.println("The Maximum Contribution was:  " + currency.format(max[i]) + " ");
+                outFile.println("The Average Contribution was: " + currency.format(average[i]) + " ");
+                outFile.println("The Number of Contributions was: " + count[i] + " ");
+                outFile.println("The Total amount Contributed was: " + currency.format(total[i]) + " ");
+                outFile.println(" ");
+            }
+
+            //after loop, close both files.
+            inFile.close(); //close
+            outFile.close(); //saves
+             }
+        catch (FileNotFoundException e){ //
+            System.err.println("File cannot be found");
+        }
+
+    }//end main
+} //end class
